@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel auth-panel">
+    <h1>로그인</h1>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="primary-button">로그인</button>
+    </form>
+</section>
+{% endblock %}

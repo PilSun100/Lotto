@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.venv/
+venv/
+htmlcov/
+.coverage
+staticfiles/
+media/
+*.log
+.DS_Store
+write-check.tmp

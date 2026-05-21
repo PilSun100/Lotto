@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Django + Docker</p>
+        <h1>6/45 Lotto 복권 서비스</h1>
+        <p>수동 또는 자동 번호로 복권을 구매하고, 추첨 후 내 당첨 결과를 확인하세요.</p>
+        <div class="actions">
+            {% if user.is_authenticated %}
+                <a class="primary-button" href="{% url 'ticket-buy' %}">복권 구매</a>
+                <a class="secondary-button" href="{% url 'ticket-list' %}">내 복권 확인</a>
+            {% else %}
+                <a class="primary-button" href="{% url 'signup' %}">시작하기</a>
+                <a class="secondary-button" href="{% url 'login' %}">로그인</a>
+            {% endif %}
+        </div>
+    </div>
+    <aside class="round-summary">
+        <h2>현재 회차</h2>
+        {% if current_round %}
+            <strong>{{ current_round.number }}회차</strong>
+            <p>{{ current_round.sales_end|date:"Y-m-d H:i" }}까지 판매</p>
+        {% else %}
+            <strong>판매 준비 중</strong>
+            <p>관리자가 회차를 생성하면 복권을 구매할 수 있습니다.</p>
+        {% endif %}
+    </aside>
+</section>
+{% endblock %}

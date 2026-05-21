@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-heading">
+    <h1>내 복권</h1>
+    <a class="primary-button" href="{% url 'ticket-buy' %}">새 복권 구매</a>
+</section>
+
+{% if tickets %}
+    <div class="ticket-grid">
+        {% for ticket in tickets %}
+            <article class="ticket-card">
+                <div>
+                    <p class="eyebrow">{{ ticket.round.number }}회차 · {{ ticket.get_purchase_type_display }}</p>
+                    <h2>{{ ticket.display_numbers }}</h2>
+                </div>
+                <strong class="rank">{{ ticket.result_rank }}</strong>
+                <p>{{ ticket.purchased_at|date:"Y-m-d H:i" }} 구매</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="panel">
+        <p>아직 구매한 복권이 없습니다.</p>
+    </section>
+{% endif %}
+{% endblock %}

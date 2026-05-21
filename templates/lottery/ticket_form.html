@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <h1>{{ current_round.number }}회차 복권 구매</h1>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="primary-button">구매하기</button>
+    </form>
+</section>
+{% endblock %}
