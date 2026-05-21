@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-heading">
+    <h1>당첨 확인</h1>
+    <a class="primary-button" href="{% url 'ticket-buy' %}">복권 구매</a>
+</section>
+
+{% if latest_result %}
+    <section class="panel result-panel">
+        <p class="eyebrow">최근 추첨 결과</p>
+        <h2>{{ latest_result.round.number }}회차</h2>
+        <p class="winning-line">
+            <span>{{ latest_result.display_winning_numbers }}</span>
+            <strong>보너스 {{ latest_result.bonus_number }}</strong>
+        </p>
+        <p>{{ latest_result.drawn_at|date:"Y-m-d H:i" }} 추첨</p>
+    </section>
+{% else %}
+    <section class="panel">
+        <h2>아직 추첨 결과가 없습니다.</h2>
+        <p>관리자가 회차를 선택해 추첨을 실행하면 이 화면에서 당첨 결과를 확인할 수 있습니다.</p>
+    </section>
+{% endif %}
+
+<section class="panel">
+    <h2>내 당첨 결과</h2>
+    {% if drawn_tickets %}
+        <div class="result-table-wrap">
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>회차</th>
+                        <th>내 번호</th>
+                        <th>구매 방식</th>
+                        <th>결과</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in drawn_tickets %}
+                        <tr>
+                            <td>{{ ticket.round.number }}회차</td>
+                            <td>{{ ticket.display_numbers }}</td>
+                            <td>{{ ticket.get_purchase_type_display }}</td>
+                            <td><strong>{{ ticket.result_rank }}</strong></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>추첨이 완료된 내 복권이 아직 없습니다.</p>
+    {% endif %}
+</section>
+
+{% if pending_tickets %}
+    <section class="panel">
+        <h2>추첨 대기 중</h2>
+        <div class="ticket-grid">
+            {% for ticket in pending_tickets %}
+                <article class="ticket-card">
+                    <p class="eyebrow">{{ ticket.round.number }}회차 · {{ ticket.get_purchase_type_display }}</p>
+                    <h3>{{ ticket.display_numbers }}</h3>
+                    <p>추첨 전</p>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

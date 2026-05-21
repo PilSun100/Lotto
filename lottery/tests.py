@@ -119,6 +119,22 @@ class TicketFlowTests(TestCase):
         ticket.refresh_from_db()
         self.assertEqual(ticket.result_rank, "1등")
 
+    def test_result_check_page_shows_drawn_ticket_rank(self):
+        Ticket.objects.create(
+            user=self.user,
+            round=self.round,
+            numbers=[1, 2, 3, 4, 5, 6],
+            purchase_type=Ticket.PurchaseType.MANUAL,
+        )
+        DrawResult.objects.create(round=self.round, winning_numbers=[1, 2, 3, 4, 5, 6], bonus_number=7)
+        self.client.login(username="buyer", password="password12345")
+
+        response = self.client.get(reverse("result-check"))
+
+        self.assertContains(response, "당첨 확인")
+        self.assertContains(response, "1등")
+        self.assertContains(response, "1, 2, 3, 4, 5, 6")
+
     def test_closed_round_rejects_new_ticket(self):
         self.round.sales_end = timezone.now() - timezone.timedelta(minutes=1)
         self.round.save()

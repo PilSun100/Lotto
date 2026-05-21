@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, ListView, TemplateView
 
 from .forms import TicketPurchaseForm
-from .models import Round, Ticket
+from .models import DrawResult, Round, Ticket
 
 
 class HomeView(TemplateView):
@@ -55,3 +55,18 @@ class TicketListView(LoginRequiredMixin, ListView):
             .select_related("round")
             .order_by("-purchased_at")
         )
+
+
+class ResultCheckView(LoginRequiredMixin, TemplateView):
+    template_name = "lottery/result_check.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        latest_result = DrawResult.objects.select_related("round").first()
+        tickets = Ticket.objects.filter(user=self.request.user).select_related("round").order_by("-purchased_at")
+
+        context["latest_result"] = latest_result
+        context["tickets"] = tickets
+        context["drawn_tickets"] = [ticket for ticket in tickets if hasattr(ticket.round, "draw_result")]
+        context["pending_tickets"] = [ticket for ticket in tickets if not hasattr(ticket.round, "draw_result")]
+        return context

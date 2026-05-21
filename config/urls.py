@@ -3,6 +3,10 @@ from django.urls import include, path
 
 from lottery.views import HomeView
 
+admin.site.site_header = "Lotto 관리자"
+admin.site.site_title = "Lotto 관리자"
+admin.site.index_title = "Lotto 사이트 관리"
+
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),

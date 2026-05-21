@@ -13,6 +13,7 @@
         <nav>
             {% if user.is_authenticated %}
                 <a href="{% url 'ticket-list' %}">내 복권</a>
+                <a href="{% url 'result-check' %}">당첨 확인</a>
                 <a href="{% url 'ticket-buy' %}">구매</a>
                 {% if user.is_staff %}
                     <a href="{% url 'admin:index' %}">관리자</a>

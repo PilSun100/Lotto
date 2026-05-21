@@ -3,7 +3,10 @@
 {% block content %}
 <section class="section-heading">
     <h1>내 복권</h1>
-    <a class="primary-button" href="{% url 'ticket-buy' %}">새 복권 구매</a>
+    <div class="actions compact-actions">
+        <a class="secondary-button" href="{% url 'result-check' %}">당첨 확인</a>
+        <a class="primary-button" href="{% url 'ticket-buy' %}">새 복권 구매</a>
+    </div>
 </section>
 
 {% if tickets %}

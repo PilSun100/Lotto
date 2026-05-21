@@ -5,7 +5,28 @@
     <h1>{{ current_round.number }}회차 복권 구매</h1>
     <form method="post" class="form-stack">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% if form.non_field_errors %}
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <fieldset class="choice-group">
+            <legend>{{ form.purchase_type.label }}</legend>
+            <div class="choice-cards">
+                {% for radio in form.purchase_type %}
+                    <label class="choice-card" for="{{ radio.id_for_label }}">
+                        {{ radio.tag }}
+                        <span>{{ radio.choice_label }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <p>
+            <label for="{{ form.numbers.id_for_label }}">{{ form.numbers.label }}</label>
+            {{ form.numbers }}
+            <span class="helptext">{{ form.numbers.help_text }}</span>
+            {{ form.numbers.errors }}
+        </p>
         <button type="submit" class="primary-button">구매하기</button>
     </form>
 </section>

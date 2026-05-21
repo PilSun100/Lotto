@@ -6,7 +6,7 @@ Django와 Docker Compose를 사용한 6/45 Lotto 웹 사이트입니다. 일반 
 
 - 회원가입, 로그인, 로그아웃
 - 수동 번호 구매와 자동 번호 구매
-- 내 복권 구매 내역 및 당첨 결과 확인
+- 내 복권 구매 내역 및 별도 당첨 확인 화면
 - Django admin 기반 판매 내역 확인
 - 회차별 추첨 admin action
 - Docker Compose 기반 `web` + `db(PostgreSQL)` multi-container 구성
@@ -43,7 +43,7 @@ docker compose exec web python manage.py createsuperuser
 2. `Round`를 생성하고 판매 시작/종료 시각을 지정합니다.
 3. 일반 사용자가 회원가입 후 `/tickets/buy/`에서 복권을 구매합니다.
 4. 관리자 화면에서 해당 회차를 선택하고 `선택한 회차 추첨 실행` action을 실행합니다.
-5. 사용자는 `/tickets/`에서 당첨 결과를 확인합니다.
+5. 사용자는 `/tickets/check/`에서 당첨 결과를 확인합니다.
 
 ## 테스트
 
