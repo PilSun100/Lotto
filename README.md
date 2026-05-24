@@ -21,11 +21,19 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser
+python manage.py seed_demo
 python manage.py runserver
 ```
 
 브라우저에서 `http://127.0.0.1:8000`으로 접속합니다.
+
+데모 관리자 계정으로 바로 로그인할 수 있습니다.
+
+- 관리자 페이지: `http://127.0.0.1:8000/admin/`
+- 아이디: `admin`
+- 비밀번호: `admin12345`
+
+`python manage.py seed_demo`는 위 관리자 계정과 판매 중인 `1회차`를 자동 생성합니다. 과제 확인용 계정이므로 실제 운영 환경에서는 사용하지 마세요.
 
 `requirements.txt` 또는 `manage.py`를 찾을 수 없다는 오류가 나오면 현재 위치가 프로젝트 폴더가 아닌 것입니다. `pwd`로 현재 위치를 확인하고 `cd /Users/pilsun/Lotto`를 먼저 실행하세요.
 
@@ -39,8 +47,10 @@ docker compose up --build
 관리자 계정은 별도 터미널에서 생성합니다.
 
 ```bash
-docker compose exec web python manage.py createsuperuser
+docker compose exec web python manage.py seed_demo
 ```
+
+Docker 실행 후 브라우저에서 `http://localhost:8000/admin/`에 접속하고 `admin / admin12345`로 로그인하면 됩니다.
 
 ## 사용 흐름
 
