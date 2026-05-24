@@ -62,7 +62,10 @@ class Ticket(models.Model):
         return calculate_rank(self.numbers, result.winning_numbers, result.bonus_number)
 
     def clean(self):
-        self.numbers = normalize_numbers(self.numbers)
+        try:
+            self.numbers = normalize_numbers(self.numbers)
+        except ValueError as exc:
+            raise ValidationError({"numbers": str(exc)})
         if self.round_id and not self.round.is_open and not self.pk:
             raise ValidationError("판매 중인 회차에만 복권을 구매할 수 있습니다.")
 
@@ -90,11 +93,14 @@ class DrawResult(models.Model):
         return ", ".join(str(number) for number in self.winning_numbers)
 
     def clean(self):
-        self.winning_numbers = normalize_numbers(self.winning_numbers)
+        try:
+            self.winning_numbers = normalize_numbers(self.winning_numbers)
+        except ValueError as exc:
+            raise ValidationError({"winning_numbers": str(exc)})
         if self.bonus_number in self.winning_numbers:
-            raise ValidationError("보너스 번호는 당첨 번호와 중복될 수 없습니다.")
+            raise ValidationError({"bonus_number": "보너스 번호는 당첨 번호와 중복될 수 없습니다."})
         if self.bonus_number < 1 or self.bonus_number > 45:
-            raise ValidationError("보너스 번호는 1부터 45 사이여야 합니다.")
+            raise ValidationError({"bonus_number": "보너스 번호는 1부터 45 사이여야 합니다."})
 
     def save(self, *args, **kwargs):
         self.full_clean()

@@ -61,4 +61,7 @@ class TicketAdmin(admin.ModelAdmin):
 class DrawResultAdmin(admin.ModelAdmin):
     list_display = ("round", "display_winning_numbers", "bonus_number", "drawn_at")
     list_filter = ("drawn_at",)
-    readonly_fields = ("drawn_at",)
+    readonly_fields = ("round", "winning_numbers", "bonus_number", "drawn_at")
+
+    def has_add_permission(self, request):
+        return False

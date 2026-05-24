@@ -1,12 +1,13 @@
+from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from .admin import run_draw
+from .admin import DrawResultAdmin, run_draw
 from .models import DrawResult, Round, Ticket
-from .services import calculate_rank, generate_ticket_numbers, normalize_numbers
+from .services import calculate_rank, generate_draw_numbers, generate_ticket_numbers, normalize_numbers
 
 
 class LotteryServiceTests(TestCase):
@@ -16,6 +17,15 @@ class LotteryServiceTests(TestCase):
         self.assertEqual(len(numbers), 6)
         self.assertEqual(len(set(numbers)), 6)
         self.assertTrue(all(1 <= number <= 45 for number in numbers))
+
+    def test_generate_draw_numbers_returns_winners_and_bonus_without_overlap(self):
+        winning_numbers, bonus_number = generate_draw_numbers()
+
+        self.assertEqual(len(winning_numbers), 6)
+        self.assertEqual(len(set(winning_numbers)), 6)
+        self.assertTrue(all(1 <= number <= 45 for number in winning_numbers))
+        self.assertTrue(1 <= bonus_number <= 45)
+        self.assertNotIn(bonus_number, winning_numbers)
 
     def test_normalize_numbers_rejects_invalid_values(self):
         invalid_cases = [
@@ -166,3 +176,8 @@ class AdminDrawActionTests(TestCase):
         round_.refresh_from_db()
         self.assertTrue(round_.is_drawn)
         self.assertTrue(DrawResult.objects.filter(round=round_).exists())
+
+    def test_draw_result_admin_cannot_add_manual_result(self):
+        model_admin = DrawResultAdmin(DrawResult, admin.site)
+
+        self.assertFalse(model_admin.has_add_permission(None))
