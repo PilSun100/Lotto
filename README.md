@@ -13,7 +13,10 @@ Django와 Docker Compose를 사용한 6/45 Lotto 웹 사이트입니다. 일반 
 
 ## 로컬 실행
 
+먼저 프로젝트 폴더로 이동한 뒤 명령어를 실행합니다.
+
 ```bash
+cd /Users/pilsun/Lotto
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -23,6 +26,8 @@ python manage.py runserver
 ```
 
 브라우저에서 `http://127.0.0.1:8000`으로 접속합니다.
+
+`requirements.txt` 또는 `manage.py`를 찾을 수 없다는 오류가 나오면 현재 위치가 프로젝트 폴더가 아닌 것입니다. `pwd`로 현재 위치를 확인하고 `cd /Users/pilsun/Lotto`를 먼저 실행하세요.
 
 ## Docker 실행
 
